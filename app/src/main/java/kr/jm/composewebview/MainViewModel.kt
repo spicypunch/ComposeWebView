@@ -8,10 +8,10 @@ import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
-    private val _undoSharedFlow = MutableSharedFlow<Boolean>()
+    private val _undoSharedFlow = MutableSharedFlow<Unit>()
     val undoSharedFlow = _undoSharedFlow.asSharedFlow()
 
-    private val _redoSharedFlow = MutableSharedFlow<Boolean>()
+    private val _redoSharedFlow = MutableSharedFlow<Unit>()
     val redoSharedFlow = _redoSharedFlow.asSharedFlow()
 
 
@@ -20,13 +20,13 @@ class MainViewModel : ViewModel() {
 
     fun undo() {
         viewModelScope.launch {
-            _undoSharedFlow.emit(true)
+            _undoSharedFlow.emit(Unit)
         }
     }
 
     fun redo() {
         viewModelScope.launch {
-            _redoSharedFlow.emit(true)
+            _redoSharedFlow.emit(Unit)
         }
     }
 
