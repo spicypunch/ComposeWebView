@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -32,14 +34,20 @@ import kotlinx.coroutines.flow.collectLatest
 import kr.jm.composewebview.ui.theme.ComposeWebViewTheme
 
 class MainActivity : ComponentActivity() {
+
+    val viewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeWebViewTheme {
-                val viewModel = viewModel<MainViewModel>()
+
                 MainScreen(viewModel)
             }
         }
+    }
+
+    override fun onBackPressed() {
+        viewModel.backPressed()
     }
 }
 
@@ -86,6 +94,7 @@ fun MyWebView(
 
     val webView = rememberWebView()
 
+
     LaunchedEffect(Unit) {
         viewModel.undoSharedFlow.collectLatest {
             if (webView.canGoBack()) {
@@ -104,6 +113,20 @@ fun MyWebView(
                 snackbarHostState.showSnackbar("앞으로 갈 수 없습니다.")
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.backPressedFlow.collectLatest {
+            if (webView.canGoBack()) {
+                webView.goBack()
+            } else {
+                snackbarHostState.showSnackbar("뒤로 갈 수 없습니다.")
+            }
+        }
+    }
+
+    BackHandler(enabled = true) {
+
     }
     AndroidView(
         modifier = Modifier.fillMaxSize(),
