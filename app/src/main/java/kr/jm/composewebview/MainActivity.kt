@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Spacer
@@ -29,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
 import kr.jm.composewebview.ui.theme.ComposeWebViewTheme
 
@@ -125,9 +123,6 @@ fun MyWebView(
         }
     }
 
-    BackHandler(enabled = true) {
-
-    }
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = { webView },
