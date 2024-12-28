@@ -13,6 +13,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
@@ -61,27 +62,28 @@ fun MainScreen(viewModel: MainViewModel) {
         bottomBar = {
             BottomAppBar(
                 modifier = Modifier.height(50.dp),
+                containerColor = Color(0xFF55B589),
                 actions = {
                     Spacer(Modifier.weight(1f))
                     IconButton(onClick = { viewModel.undo() }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "back",
-                            tint = Color.DarkGray
+                            tint = Color.White
                         )
                     }
                     IconButton(onClick = { viewModel.redo() }) {
                         Icon(
                             imageVector = Icons.Default.ArrowForward,
                             contentDescription = "forward",
-                            tint = Color.DarkGray
+                            tint = Color.White
                         )
                     }
                 }
             )
         }
-    ) {
-        MyWebView(viewModel, snackbarHostState)
+    ) { innerPadding ->
+        MyWebView(viewModel, snackbarHostState, Modifier.padding(innerPadding))
     }
 }
 
@@ -89,7 +91,8 @@ fun MainScreen(viewModel: MainViewModel) {
 @Composable
 fun MyWebView(
     viewModel: MainViewModel,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    modifier: Modifier
 ) {
 
     val webView = rememberWebView()
@@ -125,7 +128,7 @@ fun MyWebView(
     }
 
     AndroidView(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         factory = { webView },
     )
 }
